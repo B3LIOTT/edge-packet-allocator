@@ -9,7 +9,7 @@ stats = {}
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connexion réussie au broker MQTT")
-        client.subscribe(TOPIC)
+        client.subscribe(WORKERS_STATS)
     else:
         print(f"Échec de la connexion. Code de retour = {rc}")
 
