@@ -13,3 +13,5 @@ TOPIC = "test/topic"
 WORKERS_PING = ["wokers/pone", "wokers/ptwo", "wokers/pthree"]
 WORKERS_STATS = ["wokers/one", "wokers/two", "wokers/three"]
 PING_MSG = "stats"
+
+TEST_MODE = True
