@@ -1,7 +1,7 @@
 from docplex.mp.model import Model
-from modules.allocator.packet import Packet
-from modules.allocator.env import Env
-from settings import PACKET_SIZE
+from modules.allocator.edge import Edge
+from settings import PACKET_SIZE, PACKET_NUMBER
+from modules.allocator.utils import getEdgeNameFromID
 
 # --------fix---------
 # pip install "numpy<2"
@@ -15,14 +15,15 @@ class LB:
     Problème de load balancing
     """
 
-    def __init__(self, name: str, ENV: Env):
+    def __init__(self, name: str, edges: list[Edge]):
         """
         :param name: nom du problème
         :param ENV: environnement
         """
         # Définition des variables
-        self.n = len(ENV.packets)
-        self.m = len(ENV.edges)
+        self.edges = edges
+        self.n = PACKET_NUMBER
+        self.m = len(edges)
         range_n = range(self.n)
         range_m = range(self.m)
         indx = [(i, j) for i in range_n for j in range_m]
@@ -40,23 +41,29 @@ class LB:
         for j in range_m:
             self.model.add_constraint(self.model.sum(
                 PACKET_SIZE * x_dict[i, j] for i in
-                range_n) <= ENV.edges[j].remainingStorage
-            )
+                range_n) <= edges[j].remainingStorage
+                                      )
         # ----------------------------
 
         # ---- Fonction objective ----
         self.model.minimize(self.model.sum(
             self.model.sum(
-                ENV.edges[j].load * x_dict[i, j] for j in range_m
+                edges[j].load * x_dict[i, j] for j in range_m
             ) for i in range_n
         ))
         # ----------------------------
 
-    def solve(self):
+    def solve(self) -> dict[str, int]:
         try:
             self.model.solve(log_output=False)
             x = self.model.solution
-            return {k.name.split('_')[1]: k.name.split('_')[2] for k, v in x.as_dict().items() if v == 1.0}
+            allocation_dict = {}
+            for k, v in x.as_dict().items():
+                if v == 1.0:
+                    target = getEdgeNameFromID(int(k.name.split('_')[2]), self.edges)
+                    allocation_dict[target] = 1 if target not in allocation_dict else allocation_dict[target] + 1
+
+            return allocation_dict
         except Exception as e:
             print('Erreur LB: ', str(e))
             return {}
