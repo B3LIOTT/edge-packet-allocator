@@ -1,0 +1,5 @@
+quand le worker reçoit un packet il push dans le broker son sockage restant (topic: worker_i_storage)
+
+les workers envoient dans un autre topic périodiquement la charge cpu (topic: worker_i_cpu)
+OU BIEN le broker peut demander la charge cpu à un worker (topic: worker_i_cpu_request) et
+le worker répond (topic: worker_i_cpu)

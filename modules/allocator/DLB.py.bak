@@ -1,0 +1,67 @@
+from modules.recommandation.LB import LB
+from modules.recommandation.packet import Client
+from modules.recommandation.env import Env
+from modules.rabbitmq import rabbitmq_handler as rabbit
+import env_vars as env
+from time import sleep, perf_counter
+from modules.mongodb import mongdb_handler as mongo
+from loggingPA import logger
+
+
+def DLB():
+    # Connexion à la base de données
+    db, mongoClient = mongo.get_db_handle(db_name='fog-yourself', connection_string=env.MONGODB_URI)
+
+    # Connexion à RabbitMQ
+    channel, connection = rabbit.get_rabbitmq_handle(connection_string=env.RABBITMQ_URI)
+
+    # Initialisation de l'environnement
+    ENV = Env(db=db, channel=channel)
+
+    # Boucle principale
+    t = 0
+    try:
+        while True:
+            logger.info("---------------------Instant t = %s---------------------", str(t))
+
+            # start = perf_counter()
+
+            # Récupération des véhicules à l'instant t dans RabbitMQ
+            clients: list[Client] = rabbit.get_requests(channel=channel)
+
+            # Mise à jour de l'environnement avec les nouveaux véhicules
+            ENV.setClients(clients)
+
+            # Résolution PAP
+            new_lb = LB(name='CPLEX_LB', ENV=ENV)
+
+            # Résolution LB
+            try:
+                solutions = new_lb.solve()
+                logger.info('[+] SOLUTION SANS PREFERENCES UTILISATEURS: %s', str(solutions))
+
+                # formatage des résultats
+                res = {}
+                for sol in solutions:
+                    for k, v in sol.items():
+                        res[int(k)] = [ENV.edges[int(v)].data]
+
+                # Envoi des résultats dans RabbitMQ
+                for k, v in res.items():
+                    clients[int(k)].updateTarget(v)
+
+                    # Envoi des résultats dans RabbitMQ
+                    rabbit.send_result(body=clients[int(k)].toRabbitBody(), channel=channel)
+
+            except Exception as e:
+                logger.error('Erreur lors de la résolution du problème d\'allocation de parking: %s', str(e))
+
+            t += 1
+
+            sleep(ENV.FREQ)  # - (perf_counter() - start)
+
+    except KeyboardInterrupt:
+        logger.info('Interruption du programme')
+        connection.close()
+        mongo.close_db_handle(client=mongoClient)
+        exit(0)
