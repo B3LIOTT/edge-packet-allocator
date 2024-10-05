@@ -1,13 +1,15 @@
-# from modules.allocator import DLB
 from modules.allocator import LB
 from modules.allocator.edge import Edge
+from modules.mqtt import mqtt_handler as mqtt
 
 
 if __name__ == '__main__':
-    # TESTS
-    edges = [Edge(ide=0, load=5, remainingStorage=1024 * 1, associated_topic='edge1-topic'),
-             Edge(ide=1, load=80, remainingStorage=1024 * 10, associated_topic='edge2-topic'),
-             Edge(ide=2, load=20, remainingStorage=1024 * 1000, associated_topic='edge2-topic')]
+    edges = []
+    stats = mqtt.run()
+    ide = 0
+    for k, v in stats.items():
+        edges.append(Edge(ide=ide, load=float(v[0]), remainingStorage=int(v[1]), associated_topic=k))
+        ide += 1
 
     lb = LB.LB(name="LB", edges=edges)
 

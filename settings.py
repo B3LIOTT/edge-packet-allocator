@@ -8,3 +8,8 @@ FREQ = 2  # secondes
 BROKER_ADDRESS = "localhost"
 BROKER_PORT = 1883
 TOPIC = "test/topic"
+
+# Récupération des stats des workers
+WORKERS_PING = ["wokers/pone", "wokers/ptwo", "wokers/pthree"]
+WORKERS_STATS = ["wokers/one", "wokers/two", "wokers/three"]
+PING_MSG = "stats"
