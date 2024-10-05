@@ -30,8 +30,8 @@ where:
 ## Usage
 `git clone https://github.com/B3LIOTT/edge-packet-allocator.git`
 
-`pip install -r requirements.txt`
-
 `cd edge-packet-allocator`
+
+`pip install -r requirements.txt`
 
 `python .`
