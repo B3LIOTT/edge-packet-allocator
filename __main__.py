@@ -5,15 +5,13 @@ from settings import TEST_MODE
 
 
 if __name__ == '__main__':
-    edges = []
     stats = mqtt.run()
 
     ide = 0
+    edges = []
     for k, v in stats.items():
         edges.append(Edge(ide=ide, load=float(v[0]), remainingStorage=int(v[1]), associated_topic=k))
         ide += 1
-
-    lb = LB.LB(name="LB", edges=edges)
 
     if TEST_MODE:
         print('\nEdges:')
@@ -21,6 +19,7 @@ if __name__ == '__main__':
             print(edge)
         print("\nResult:")
 
+    lb = LB.LB(name="LB", edges=edges)
     res = lb.solve()
 
     for k, v in res.items():
