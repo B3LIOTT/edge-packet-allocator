@@ -6,6 +6,7 @@ from modules.mqtt import mqtt_handler as mqtt
 if __name__ == '__main__':
     edges = []
     stats = mqtt.run()
+
     ide = 0
     for k, v in stats.items():
         edges.append(Edge(ide=ide, load=float(v[0]), remainingStorage=int(v[1]), associated_topic=k))

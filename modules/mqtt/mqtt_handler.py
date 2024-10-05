@@ -54,7 +54,7 @@ def run():
     #     client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
     # except Exception as e:
     #     print(f"Erreur de connexion au broker MQTT: {e}")
-    #     return
+    #     exit(1)
     #
     # try:
     #     client.loop_start()
@@ -63,10 +63,16 @@ def run():
     #     ping_workers(client)
     #
     #     # wait for responses in WORKERS_STATS topics
-    #     sleep(1)
+    #     while len(stats) < len(WORKERS_STATS):
+    #         sleep(0.1)
     #
     # except KeyboardInterrupt:
-    #     print("Orvouar")
+    #     print("X-X")
+    #     exit(0)
+    #
+    # except Exception as e:
+    #     print(f"Erreur: {e}")
+    #     exit(1)
     #
     # finally:
     #     client.loop_stop()
