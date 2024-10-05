@@ -9,18 +9,18 @@ minimize the CPU load of each node subject to the constraint that the storage of
 
 In mathematical terms we have:
 
-$min \sum_{i=1}^{n} x_i * c_i$
+$min \sum_{i,j \in \omega} x_{i,j} * c_j$
 
 subject to:
 
-$\sum_{i=1}^{n} x_i * s_i \leq S$
+$\sum_{i=1}^{n} x_i * s_j \leq S$ for each $j \in \{1,2,...,n\}$
 
-$x_i \in \{0,1\}$
+$x_{i,j} \in \{0,1\}$
 
 where:
-- $x_i$ is the decision variable that indicates if the packet goes to the node $i$
-- $c_i$ is the CPU load of the node $i$
-- $s_i$ is the storage of the node $i$
+- $x_{i,j}$ is the decision variable that indicates if the packet $i$ goes to the node $j$
+- $c_j$ is the CPU load of the node $j$
+- $s_j$ is the storage of the node $j$
 - $S$ is the storage limit
 - $n$ is the number of nodes
 
