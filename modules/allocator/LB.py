@@ -47,7 +47,7 @@ class LB:
         # ---- Fonction objective ----
         self.model.minimize(self.model.sum(
             self.model.sum(
-                (ENV.edges[j].load**2) * x_dict[i, j] for j in range_m
+                ENV.edges[j].load * x_dict[i, j] for j in range_m
             ) for i in range_n
         ))
         # ----------------------------
