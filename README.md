@@ -8,9 +8,13 @@ To do this, it gets CPU load and available storage from each FOG node and alloca
 minimize the CPU load of each node subject to the constraint that the storage of each node is not exceeded.
 
 In mathematical terms we have:
+
 $min \sum_{i=1}^{n} x_i * c_i$
+
 subject to:
+
 $\sum_{i=1}^{n} x_i * s_i \leq S$
+
 $x_i \in \{0,1\}$
 
 where:
