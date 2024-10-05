@@ -22,7 +22,7 @@ $x_{i,j} \in \{0,1\}$
 where:
 - $x_{i,j}$ is the decision variable that indicates if the packet $i$ goes to the node $j$
 - $c_j$ is the CPU load of the node $j$
-- s_p is the size of a packet
+- $s_p$ is the size of a packet
 - $s_j$ is the storage of the node $j$
 - $n$ is the number of nodes
 - $m$ is the number of packets
