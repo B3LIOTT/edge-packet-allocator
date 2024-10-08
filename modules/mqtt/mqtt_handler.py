@@ -22,11 +22,12 @@ def on_disconnect(client, userdata, rc):
 
 
 def on_message(client, userdata, msg):
-    print(f"Message reçu sur {msg.topic}: {msg.payload.decode()}")
+    payload = msg.payload.decode()
+    print(f"Message reçu sur {msg.topic}: {payload}")
 
     # parse stats
     # je dois recevoir le topic sur lequel le worker attend les packets, le cpu load et la mémoire restante
-    stats["topic"] = (10, 10)  # msg.payload.decode().split(',')
+    stats[msg.topic] = msg.payload.decode().split(',')
 
 
 def on_publish(client, userdata, mid):

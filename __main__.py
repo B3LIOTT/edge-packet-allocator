@@ -2,6 +2,7 @@ from modules.allocator import LB
 from modules.allocator.edge import Edge
 from modules.mqtt import mqtt_handler as mqtt
 from settings import TEST_MODE
+from time import sleep
 
 
 if __name__ == '__main__':
@@ -19,9 +20,18 @@ if __name__ == '__main__':
             print(edge)
         print("\nResult:")
 
-    lb = LB.LB(name="LB", edges=edges)
-    res = lb.solve()
+    try:
+        while True:
+            lb = LB.LB(name="LB", edges=edges)
+            res = lb.solve()
 
-    for k, v in res.items():
-        if v > 0:
-            print(f"{k} : {v}")
+            for k, v in res.items():
+                if v > 0:
+                    print(f"{k} : {v}")
+
+            print("------------------------------")
+            sleep(2)
+
+    except KeyboardInterrupt:
+        print("\nX-X")
+        exit(0)
