@@ -11,5 +11,9 @@ class Edge:
         self.remainingStorage = remainingStorage
         self.associated_topic = associated_topic
 
+    def update_stats(self, load: float, remainingStorage: int):
+        self.load = load
+        self.remainingStorage = remainingStorage
+
     def __str__(self):
         return f"Edge {self.ide} - Load: {self.load} - Remaining storage: {self.remainingStorage} bits"

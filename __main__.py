@@ -6,22 +6,23 @@ from time import sleep
 
 
 if __name__ == '__main__':
-    stats = mqtt.run()
+    client = mqtt.connect()
+    mqtt.WorkersStats.get_stats()
 
     ide = 0
     edges = []
-    for k, v in stats.items():
+    for k, v in mqtt.WorkersStats.stats.items():
         edges.append(Edge(ide=ide, load=float(v[0]), remainingStorage=int(v[1]), associated_topic=k))
         ide += 1
 
-    if TEST_MODE:
-        print('\nEdges:')
-        for edge in edges:
-            print(edge)
-        print("\nResult:")
-
     try:
         while True:
+            if TEST_MODE:
+                print('\nEdges:')
+                for edge in edges:
+                    print(edge)
+                print("\nResult:")
+
             lb = LB.LB(name="LB", edges=edges)
             res = lb.solve()
 
@@ -31,7 +32,14 @@ if __name__ == '__main__':
 
             print("------------------------------")
             sleep(2)
+            mqtt.WorkersStats.get_stats()
 
     except KeyboardInterrupt:
         print("\nX-X")
+        # mqtt.dispose(client)
         exit(0)
+
+    except Exception as e:
+        print(f"Erreur: {e}")
+        # mqtt.dispose(client)
+        exit(1)

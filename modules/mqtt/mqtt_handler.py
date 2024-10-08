@@ -3,7 +3,31 @@ from settings import *
 from time import sleep
 
 
-stats = {}
+class WorkersStats:
+    stats = {}
+    waiting_stats = False
+
+    @staticmethod
+    def get_stats():
+        if TEST_MODE:
+            print("Getting stats from workers...")
+
+        WorkersStats.waiting_stats = True
+        # ping_workers(client)  # This func will return when all workers have responded
+
+        # dummy
+        sleep(1)
+        WorkersStats.stats = {
+            'edge1-topic': (10, 1024 * 1),
+            'edge2-topic': (80, 1024 * 10),
+            'edge3-topic': (20, 1024 * 1000)
+        }
+        # -----
+
+        if TEST_MODE:
+            print("Stats received")
+
+        WorkersStats.waiting_stats = False
 
 
 def on_connect(client, userdata, flags, rc):
@@ -27,7 +51,7 @@ def on_message(client, userdata, msg):
 
     # parse stats
     # je dois recevoir le topic sur lequel le worker attend les packets, le cpu load et la mémoire restante
-    stats[msg.topic] = msg.payload.decode().split(',')
+    WorkersStats.stats[msg.topic] = msg.payload.decode().split(',')
 
 
 def on_publish(client, userdata, mid):
@@ -42,8 +66,18 @@ def ping_workers(client):
     for topic in WORKERS_PING:
         client.publish(topic, PING_MSG)
 
+    # wait for responses from workers
+    timeout = 50  # if it takes more than 50*0.1 = 5 seconds, then we raise an alert
+    while WorkersStats.waiting_stats:
+        if timeout == 0:
+            print("Timeout: Workers did not respond")
+            break
 
-def run():
+        sleep(0.1)
+        timeout -= 1
+
+
+def connect():
     client = mqtt.Client()
     client.on_connect = on_connect
     client.on_disconnect = on_disconnect
@@ -55,38 +89,18 @@ def run():
     #     client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
     # except Exception as e:
     #     print(f"Erreur de connexion au broker MQTT: {e}")
+    #     dispose(client)
     #     exit(1)
     #
-    # try:
-    #     client.loop_start()
-    #
-    #     # ask wokers for stats
-    #     ping_workers(client)
-    #
-    #     # wait for responses in WORKERS_STATS topics
-    #     while len(stats) < len(WORKERS_STATS):
-    #         sleep(0.1)
-    #
-    # except KeyboardInterrupt:
-    #     print("X-X")
-    #     exit(0)
-    #
-    # except Exception as e:
-    #     print(f"Erreur: {e}")
-    #     exit(1)
-    #
-    # finally:
-    #     client.loop_stop()
-    #     client.disconnect()
+    # client.loop_start()
 
-    stats_test = {
-        'edge1-topic': (10, 1024 * 1),
-        'edge2-topic': (80, 1024 * 10),
-        'edge3-topic': (20, 1024 * 1000)
-    }
+    return client
 
-    return stats_test
+
+def dispose(client):
+    client.loop_stop()
+    client.disconnect()
 
 
 if __name__ == "__main__":
-    print(run())
+    print(connect())

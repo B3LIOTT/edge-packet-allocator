@@ -10,8 +10,9 @@ BROKER_ADDRESS = "localhost"
 BROKER_PORT = 1883
 
 # Récupération des stats des workers
+N_WORKERS = 3
 WORKERS_PING = ["wokers/pone", "wokers/ptwo", "wokers/pthree"]
 WORKERS_STATS = ["wokers/one", "wokers/two", "wokers/three"]
 PING_MSG = "stats"
 
-TEST_MODE = True
+TEST_MODE = False
