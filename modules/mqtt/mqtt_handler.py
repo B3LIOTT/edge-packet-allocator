@@ -16,11 +16,11 @@ class WorkersStats:
         # ping_workers(client)  # This func will return when all workers have responded
 
         # dummy
-        sleep(1)
+        sleep(0.5)
         WorkersStats.stats = {
-            'edge1-topic': (10, 1024 * 1),
-            'edge2-topic': (80, 1024 * 10),
-            'edge3-topic': (20, 1024 * 1000)
+            'packet_worker_1': (10, 1024 * 1),
+            'packet_worker_2': (80, 1024 * 10),
+            'packet_worker_3': (20, 1024 * 1000)
         }
         # -----
 
@@ -75,6 +75,11 @@ def ping_workers(client):
 
         sleep(0.1)
         timeout -= 1
+
+
+def publish_policy(client, policy):
+    for k, v in policy.items():
+        client.publish(k, str(v))
 
 
 def connect():

@@ -9,10 +9,13 @@ FREQ = 2  # secondes
 BROKER_ADDRESS = "localhost"
 BROKER_PORT = 1883
 
+# Policy
+POLICY_TOPIC = "LB_policy"
+
 # Récupération des stats des workers
 N_WORKERS = 3
-WORKERS_PING = ["wokers/pone", "wokers/ptwo", "wokers/pthree"]
-WORKERS_STATS = ["wokers/one", "wokers/two", "wokers/three"]
+WORKERS_PING = ["ping_worker_1", "ping_worker_2", "ping_worker_3"]
+WORKERS_STATS = ["stats_worker_1", "stats_worker_2", "stats_worker_3"]
 PING_MSG = "stats"
 
 TEST_MODE = False

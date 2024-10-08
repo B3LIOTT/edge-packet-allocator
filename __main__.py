@@ -30,6 +30,8 @@ if __name__ == '__main__':
                 if v > 0:
                     print(f"{k} : {v}")
 
+            # mqtt.publish_policy(client, res)
+
             print("------------------------------")
             sleep(2)
             mqtt.WorkersStats.get_stats()
