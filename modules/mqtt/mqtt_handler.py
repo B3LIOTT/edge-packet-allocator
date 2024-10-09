@@ -77,11 +77,6 @@ def ping_workers(client):
         timeout -= 1
 
 
-def publish_policy(client, policy):
-    for k, v in policy.items():
-        client.publish(k, str(v))
-
-
 def connect():
     client = mqtt.Client()
     client.on_connect = on_connect
@@ -90,14 +85,14 @@ def connect():
     client.on_publish = on_publish
     client.on_subscribe = on_subscribe
 
-    # try:
-    #     client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
-    # except Exception as e:
-    #     print(f"Erreur de connexion au broker MQTT: {e}")
-    #     dispose(client)
-    #     exit(1)
-    #
-    # client.loop_start()
+    try:
+        client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
+    except Exception as e:
+        print(f"Erreur de connexion au broker MQTT: {e}")
+        dispose(client)
+        exit(1)
+
+    client.loop_start()
 
     return client
 

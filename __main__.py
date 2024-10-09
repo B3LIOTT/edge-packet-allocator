@@ -1,12 +1,14 @@
 from modules.allocator import LB
 from modules.allocator.edge import Edge
 from modules.mqtt import mqtt_handler as mqtt
+from modules.socket_msgpack import smp_handler as smp
 from settings import TEST_MODE
 from time import sleep
 
 
 if __name__ == '__main__':
-    client = mqtt.connect()
+    #client = mqtt.connect()
+    # socket_conn = smp.connect()
     mqtt.WorkersStats.get_stats()
 
     ide = 0
@@ -30,7 +32,7 @@ if __name__ == '__main__':
                 if v > 0:
                     print(f"{k} : {v}")
 
-            # mqtt.publish_policy(client, res)
+            # smp.publish_policy(socket_conn, res)
 
             print("------------------------------")
             sleep(2)
@@ -39,9 +41,11 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\nX-X")
         # mqtt.dispose(client)
+        # smp.dispose(socket_conn)
         exit(0)
 
     except Exception as e:
         print(f"Erreur: {e}")
         # mqtt.dispose(client)
+        # smp.dispose(socket_conn)
         exit(1)

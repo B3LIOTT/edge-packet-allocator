@@ -6,11 +6,12 @@ FREQ = 2  # secondes
 
 
 # MQTT
-BROKER_ADDRESS = "localhost"
+BROKER_ADDRESS = "123abc"
 BROKER_PORT = 1883
 
 # Policy
-POLICY_TOPIC = "LB_policy"
+POLICY_SOCKET_ADR = "123abc"
+POLICY_SOCKET_PORT = 1234
 
 # Récupération des stats des workers
 N_WORKERS = 3
