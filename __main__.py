@@ -7,7 +7,7 @@ from time import sleep
 
 
 if __name__ == '__main__':
-    #client = mqtt.connect()
+    # client = mqtt.connect()
     # socket_conn = smp.connect()
     mqtt.WorkersStats.get_stats()
 
@@ -40,12 +40,11 @@ if __name__ == '__main__':
 
     except KeyboardInterrupt:
         print("\nX-X")
-        # mqtt.dispose(client)
-        # smp.dispose(socket_conn)
-        exit(0)
 
     except Exception as e:
         print(f"Erreur: {e}")
+
+    finally:
         # mqtt.dispose(client)
         # smp.dispose(socket_conn)
-        exit(1)
+        pass
