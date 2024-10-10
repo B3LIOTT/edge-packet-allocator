@@ -1,12 +1,12 @@
-from settings import POLICY_SOCKET_ADR, POLICY_SOCKET_PORT
 import socket
 import msgpack
+from settings import SOCKET_PORT, SOCKET_ADDR
 
 
 def connect():
     try:
         socket_conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        socket_conn.connect((POLICY_SOCKET_ADR, POLICY_SOCKET_PORT))
+        socket_conn.connect((SOCKET_ADDR, SOCKET_PORT))
     except Exception as e:
         print("Erreur lors de la connexion socket au server: ", e)
         exit(1)
@@ -24,8 +24,9 @@ def dispose(socket_conn):
 def publish_policy(socket_conn, policy):
     try:
         packed_data = msgpack.packb(policy)
+        data_len = len(packed_data).to_bytes(4, 'big')
+        socket_conn.sendall(data_len)
         socket_conn.sendall(packed_data)
-        print(f"Sent data: {policy}")
 
     except socket.error as e:
         print("Erreur lors de l'envoi de la règle: ", e)

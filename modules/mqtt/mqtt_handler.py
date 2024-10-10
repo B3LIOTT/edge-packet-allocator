@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import msgpack
 from settings import *
 from time import sleep
 
@@ -18,9 +19,9 @@ class WorkersStats:
         # dummy --------------------------------
         sleep(0.5)
         WorkersStats.stats = {
-            'packet_worker_1': (10, 1024 * 1),
-            'packet_worker_2': (80, 1024 * 10),
-            'packet_worker_3': (20, 1024 * 1000)
+            'packet_worker_1': (10, PACKET_SIZE * 1),
+            'packet_worker_2': (80, PACKET_SIZE * 10),
+            'packet_worker_3': (20, PACKET_SIZE * 1000)
         }
         WorkersStats.waiting_stats = False
         # --------------------------------------
@@ -77,6 +78,11 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def ping_workers(client):
     for topic in WORKERS_PING:
         client.publish(topic, PING_MSG)
+
+
+# def publish_policy(client, policy):
+#     packed_data = msgpack.packb(policy)
+#     client.publish(POLICY_TOPIC, packed_data)
 
 
 def connect():
