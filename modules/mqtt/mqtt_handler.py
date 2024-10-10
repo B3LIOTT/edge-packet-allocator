@@ -15,7 +15,7 @@ class WorkersStats:
         WorkersStats.waiting_stats = True
         # ping_workers(client)
 
-        # dummy
+        # dummy --------------------------------
         sleep(0.5)
         WorkersStats.stats = {
             'packet_worker_1': (10, 1024 * 1),
@@ -23,7 +23,7 @@ class WorkersStats:
             'packet_worker_3': (20, 1024 * 1000)
         }
         WorkersStats.waiting_stats = False
-        # -----
+        # --------------------------------------
 
         # wait for responses from workers
         timeout = 50  # if it takes more than 50*0.1 = 5 seconds, then we raise an alert
