@@ -35,6 +35,7 @@ if __name__ == '__main__':
             # smp.publish_policy(socket_conn, res)
 
             print("------------------------------")
+            mqtt.WorkersStats.waiting_stats = False
             sleep(2)
             mqtt.WorkersStats.get_stats()
 

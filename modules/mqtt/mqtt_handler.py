@@ -13,7 +13,7 @@ class WorkersStats:
             print("Getting stats from workers...")
 
         WorkersStats.waiting_stats = True
-        # ping_workers(client)  # This func will return when all workers have responded
+        # ping_workers(client)
 
         # dummy
         sleep(0.5)
@@ -22,12 +22,21 @@ class WorkersStats:
             'packet_worker_2': (80, 1024 * 10),
             'packet_worker_3': (20, 1024 * 1000)
         }
+        WorkersStats.waiting_stats = False
         # -----
+
+        # wait for responses from workers
+        timeout = 50  # if it takes more than 50*0.1 = 5 seconds, then we raise an alert
+        while WorkersStats.waiting_stats:
+            if timeout == 0:
+                print("Timeout: Workers did not respond")
+                break
+
+            sleep(0.1)
+            timeout -= 1
 
         if TEST_MODE:
             print("Stats received")
-
-        WorkersStats.waiting_stats = False
 
 
 def on_connect(client, userdata, flags, rc):
@@ -53,6 +62,9 @@ def on_message(client, userdata, msg):
     # je dois recevoir le topic sur lequel le worker attend les packets, le cpu load et la mémoire restante
     WorkersStats.stats[msg.topic] = msg.payload.decode().split(',')
 
+    if len(WorkersStats.stats) == N_WORKERS:
+        WorkersStats.waiting_stats = False
+
 
 def on_publish(client, userdata, mid):
     print(f"Message publié avec ID {mid}")
@@ -65,16 +77,6 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def ping_workers(client):
     for topic in WORKERS_PING:
         client.publish(topic, PING_MSG)
-
-    # wait for responses from workers
-    timeout = 50  # if it takes more than 50*0.1 = 5 seconds, then we raise an alert
-    while WorkersStats.waiting_stats:
-        if timeout == 0:
-            print("Timeout: Workers did not respond")
-            break
-
-        sleep(0.1)
-        timeout -= 1
 
 
 def connect():
