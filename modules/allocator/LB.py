@@ -53,6 +53,10 @@ class LB:
         ))
         # ----------------------------
 
+
+    def update_edges(self, edges: list[Edge]):
+        self.edges = edges
+
     def solve(self) -> dict[str, int]:
         try:
             self.model.solve(log_output=False)

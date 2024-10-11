@@ -18,6 +18,7 @@ if __name__ == '__main__':
         ide += 1
 
     try:
+        lb = LB.LB(name="LB", edges=edges)
         while True:
             if TEST_MODE:
                 print('\nEdges:')
@@ -25,7 +26,6 @@ if __name__ == '__main__':
                     print(edge)
                 print("\nResult:")
 
-            lb = LB.LB(name="LB", edges=edges)
             res = lb.solve()
 
             for k, v in res.items():
@@ -38,6 +38,7 @@ if __name__ == '__main__':
             mqtt.WorkersStats.waiting_stats = False
             sleep(FREQ)
             mqtt.WorkersStats.get_stats()
+            lb.update_edges(edges)
 
     except KeyboardInterrupt:
         print("\nX-X")
