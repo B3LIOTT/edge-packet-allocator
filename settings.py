@@ -7,12 +7,12 @@ FREQ = 1  # secondes
 
 
 # MQTT
-BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS")
-BROKER_PORT = int(os.environ.get("BROKER_PORT"))
+BROKER_ADDRESS = ""# os.environ.get("BROKER_ADDRESS")
+BROKER_PORT = 1#int(os.environ.get("BROKER_PORT"))
 
 # Policy
-SOCKET_ADDR = os.environ.get("SOCKET_ADDR")
-SOCKET_PORT = int(os.environ.get("SOCKET_PORT"))
+SOCKET_ADDR = ""#os.environ.get("SOCKET_ADDR")
+SOCKET_PORT = 1#int(os.environ.get("SOCKET_PORT"))
 
 # Récupération des stats des workers
 N_WORKERS = 3
