@@ -8,7 +8,7 @@ from time import sleep
 
 if __name__ == '__main__':
     # client = mqtt.connect()
-    socket_conn = smp.connect()
+    # socket_conn = smp.connect()
     mqtt.WorkersStats.get_stats()
 
     ide = 0
@@ -32,7 +32,7 @@ if __name__ == '__main__':
                 if v > 0:
                     print(f"{k} : {v}")
 
-            smp.publish_policy(socket_conn, res)
+            # smp.publish_policy(socket_conn, res)
 
             print("------------------------------")
             mqtt.WorkersStats.waiting_stats = False
@@ -47,5 +47,5 @@ if __name__ == '__main__':
 
     finally:
         # mqtt.dispose(client)
-        smp.dispose(socket_conn)
+        # smp.dispose(socket_conn)
         pass
