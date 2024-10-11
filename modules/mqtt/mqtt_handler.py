@@ -20,7 +20,7 @@ class WorkersStats:
         sleep(0.5)
         WorkersStats.stats = {
             'packet_worker_1': (10, PACKET_SIZE * 1),
-            'packet_worker_2': (80, PACKET_SIZE * 10),
+            'packet_worker_2': (80, PACKET_SIZE * 100),
             'packet_worker_3': (20, PACKET_SIZE * 1000)
         }
         WorkersStats.waiting_stats = False

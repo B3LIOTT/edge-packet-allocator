@@ -1,18 +1,18 @@
+import os
 
-PACKET_NUMBER = 256  # nombre de paquets à traiter par ittération
+PACKET_NUMBER = 1024  # nombre de paquets à traiter par ittération
 PACKET_SIZE = 1920*1080*3  # taille d'un paquet
 MAX_STORAGE = PACKET_SIZE * 1000  # taille de stockage max par edge
 FREQ = 1  # secondes
 
 
 # MQTT
-BROKER_ADDRESS = "123abc"
-BROKER_PORT = 1883
+BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS")
+BROKER_PORT = int(os.environ.get("BROKER_PORT"))
 
 # Policy
-POLICY_TOPIC = "LB_policy"
-SOCKET_ADDR = "192.168.202.80"
-SOCKET_PORT = 8000
+SOCKET_ADDR = os.environ.get("SOCKET_ADDR")
+SOCKET_PORT = int(os.environ.get("SOCKET_PORT"))
 
 # Récupération des stats des workers
 N_WORKERS = 3
