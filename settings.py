@@ -15,8 +15,12 @@ except TypeError:
     BROKER_PORT = 1883
 
 # Policy
-SOCKET_ADDR = ""#os.environ.get("SOCKET_ADDR")
-SOCKET_PORT = 1#int(os.environ.get("SOCKET_PORT"))
+try:
+    SOCKET_ADDR = os.environ.get("SOCKET_ADDR")
+    SOCKET_PORT = int(os.environ.get("SOCKET_PORT"))
+except TypeError:
+    SOCKET_ADDR = "10.4.14.78"
+    SOCKET_PORT = 12345
 
 # Récupération des stats des workers
 N_WORKERS = 3
