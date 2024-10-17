@@ -7,8 +7,12 @@ FREQ = 1  # secondes
 
 
 # MQTT
-BROKER_ADDRESS = ""# os.environ.get("BROKER_ADDRESS")
-BROKER_PORT = 1#int(os.environ.get("BROKER_PORT"))
+try:
+    BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS")
+    BROKER_PORT = int(os.environ.get("BROKER_PORT"))
+except TypeError:
+    BROKER_ADDRESS = "localhost"
+    BROKER_PORT = 1883
 
 # Policy
 SOCKET_ADDR = ""#os.environ.get("SOCKET_ADDR")
