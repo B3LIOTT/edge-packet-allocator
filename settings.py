@@ -11,7 +11,7 @@ try:
     BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS")
     BROKER_PORT = int(os.environ.get("BROKER_PORT"))
 except TypeError:
-    BROKER_ADDRESS = "localhost"
+    BROKER_ADDRESS = "10.4.14.78"
     BROKER_PORT = 1883
 
 # Policy
@@ -20,8 +20,8 @@ SOCKET_PORT = 1#int(os.environ.get("SOCKET_PORT"))
 
 # Récupération des stats des workers
 N_WORKERS = 3
-WORKERS_PING = ["ping_worker_1", "ping_worker_2", "ping_worker_3"]
-WORKERS_STATS = ["stats_worker_1", "stats_worker_2", "stats_worker_3"]
+WORKERS_PING = [("ping_worker_1", 1), ("ping_worker_2", 1), ("ping_worker_3", 1)]
+WORKERS_STATS = [("stats_worker_1", 1), ("stats_worker_2", 1), ("stats_worker_3", 1)]
 PING_MSG = "stats"
 
 TEST_MODE = False

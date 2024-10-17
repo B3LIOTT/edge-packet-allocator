@@ -59,9 +59,10 @@ def on_message(client, userdata, msg):
     payload = msg.payload.decode()
     print(f"Message reçu sur {msg.topic}: {payload}")
 
-    # parse stats
-    # je dois recevoir le topic sur lequel le worker attend les packets, le cpu load et la mémoire restante
-    WorkersStats.stats[msg.topic] = msg.payload.decode().split(',')
+    try:
+        WorkersStats.stats[msg.topic] = (msg.payload['cpu_usage'], msg.payload['ram_usage'])
+    except Exception as e:
+        print(f"Erreur lors de la récupération des stats: {e}")
 
     if len(WorkersStats.stats) == N_WORKERS:
         WorkersStats.waiting_stats = False

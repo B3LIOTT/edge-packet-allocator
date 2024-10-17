@@ -6,11 +6,10 @@ from settings import TEST_MODE, FREQ
 from time import sleep
 
 
-if __name__ == '__main__':
+def conn_loop(call):
     while True:
         try:
-            client = mqtt.connect()
-            socket_conn = smp.connect()
+            ret = call()
             break
         except Exception as e:
             print(f"Erreur: {e}")
@@ -18,6 +17,12 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print("\nX-X")
             exit(0)
+
+    return ret
+
+if __name__ == '__main__':
+    client = conn_loop(mqtt.connect)
+    socket_conn = conn_loop(smp.connect)
 
     mqtt.WorkersStats.get_stats()
 
