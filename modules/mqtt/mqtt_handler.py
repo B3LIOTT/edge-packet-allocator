@@ -80,11 +80,6 @@ def ping_workers(client):
         client.publish(topic, PING_MSG)
 
 
-# def publish_policy(client, policy):
-#     packed_data = msgpack.packb(policy)
-#     client.publish(POLICY_TOPIC, packed_data)
-
-
 def connect():
     client = mqtt.Client()
     client.on_connect = on_connect
@@ -96,9 +91,8 @@ def connect():
     try:
         client.connect(BROKER_ADDRESS, BROKER_PORT, 60)
     except Exception as e:
-        print(f"Erreur de connexion au broker MQTT: {e}")
         dispose(client)
-        exit(1)
+        raise Exception("Connexion au broker MQTT impossible")
 
     client.loop_start()
 

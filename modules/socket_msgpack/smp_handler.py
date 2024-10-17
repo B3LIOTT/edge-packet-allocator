@@ -8,8 +8,7 @@ def connect():
         socket_conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket_conn.connect((SOCKET_ADDR, SOCKET_PORT))
     except Exception as e:
-        print("Erreur lors de la connexion socket au server: ", e)
-        exit(1)
+        raise Exception("Connexion au socket impossible")
 
     return socket_conn
 

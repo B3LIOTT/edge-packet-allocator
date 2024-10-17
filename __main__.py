@@ -7,8 +7,18 @@ from time import sleep
 
 
 if __name__ == '__main__':
-    # client = mqtt.connect()
-    # socket_conn = smp.connect()
+    while True:
+        try:
+            client = mqtt.connect()
+            socket_conn = smp.connect()
+            break
+        except Exception as e:
+            print(f"Erreur: {e}")
+            sleep(1)
+        except KeyboardInterrupt:
+            print("\nX-X")
+            exit(0)
+
     mqtt.WorkersStats.get_stats()
 
     ide = 0
@@ -32,7 +42,7 @@ if __name__ == '__main__':
                 if v > 0:
                     print(f"{k} : {v}")
 
-            # smp.publish_policy(socket_conn, res)
+            smp.publish_policy(socket_conn, res)
 
             print("------------------------------")
             mqtt.WorkersStats.waiting_stats = False
