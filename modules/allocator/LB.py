@@ -1,5 +1,4 @@
 import numpy as np
-
 from modules.allocator.edge import Edge
 from settings import PACKET_SIZE, PACKET_NUMBER, MAX_STORAGE, CPU_THRESHOLD
 from log_conf import logger
@@ -40,7 +39,8 @@ class LB:
                 return {}
 
             for e, weight in good_edges:
-                allocation_dict[e.associated_topic] = int(PACKET_NUMBER * weight / tot)
+                pNum = int(PACKET_NUMBER * weight / tot)
+                allocation_dict[e.associated_topic] = pNum if e.remainingStorage > pNum else e.remainingStorage // PACKET_SIZE
 
             return allocation_dict
         except Exception as e:
