@@ -9,7 +9,7 @@ minimize the CPU load of each node subject to the constraint that the storage of
 
 In mathematical terms we have:
 
-$min \sum_{i,j \in \Omega} x_{i,j} * c_j$
+$min \sum_{i,j \in \Omega} x_{i,j}c_j$
 
 subject to:
 
