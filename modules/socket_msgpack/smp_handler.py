@@ -1,6 +1,7 @@
 import socket
 import msgpack
 from settings import SOCKET_PORT, SOCKET_ADDR
+from log_conf import logger
 
 
 def connect():
@@ -17,7 +18,7 @@ def dispose(socket_conn):
     if socket_conn:
         socket_conn.close()
     else:
-        print("Pas de connexion socket à stopper")
+        logger.error("Pas de connexion socket à stopper")
 
 
 def publish_policy(socket_conn, policy):
@@ -28,6 +29,6 @@ def publish_policy(socket_conn, policy):
         socket_conn.sendall(packed_data)
 
     except socket.error as e:
-        print("Erreur lors de l'envoi de la règle: ", e)
+        logger.error("Erreur lors de l'envoi de la règle: ", e)
     except msgpack.PackValueError as e:
-        print("Erreur lors du paquetage de la règle: ", e)
+        logger.error("Erreur lors du paquetage de la règle: ", e)

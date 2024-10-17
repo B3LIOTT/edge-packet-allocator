@@ -2,6 +2,7 @@ from docplex.mp.model import Model
 from modules.allocator.edge import Edge
 from settings import PACKET_SIZE, PACKET_NUMBER
 from modules.allocator.utils import getEdgeNameFromID
+from log_conf import logger
 
 # --------fix---------
 # pip install "numpy<2"
@@ -69,7 +70,7 @@ class LB:
 
             return allocation_dict
         except Exception as e:
-            print('Erreur LB: ', str(e))
+            logger.error('Erreur LB: ', str(e))
             return {}
 
     def print_information(self):

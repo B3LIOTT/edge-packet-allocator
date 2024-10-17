@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import msgpack
 from settings import *
 from time import sleep
+from log_conf import logger
 
 
 class WorkersStats:
@@ -10,8 +11,7 @@ class WorkersStats:
 
     @staticmethod
     def get_stats():
-        if TEST_MODE:
-            print("Getting stats from workers...")
+        logger.info("Getting stats from workers...")
 
         WorkersStats.waiting_stats = True
         # ping_workers(client)
@@ -30,50 +30,50 @@ class WorkersStats:
         timeout = 50  # if it takes more than 50*0.1 = 5 seconds, then we raise an alert
         while WorkersStats.waiting_stats:
             if timeout == 0:
-                print("Timeout: Workers did not respond")
+                logger.error("Timeout: Workers did not respond")
                 break
 
             sleep(0.1)
             timeout -= 1
 
         if TEST_MODE:
-            print("Stats received")
+            logger.info("Stats received")
 
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print("Connexion réussie au broker MQTT")
+        logger.info("Connexion réussie au broker MQTT")
         client.subscribe(WORKERS_STATS)
     else:
-        print(f"Échec de la connexion. Code de retour = {rc}")
+        logger.error(f"Échec de la connexion. Code de retour = {rc}")
 
 
 def on_disconnect(client, userdata, rc):
     if rc != 0:
-        print(f"Déconnexion inattendue. Code de retour = {rc}")
+        logger.info(f"Déconnexion inattendue. Code de retour = {rc}")
     else:
-        print("Déconnexion propre du broker MQTT")
+        logger.error("Déconnexion propre du broker MQTT")
 
 
 def on_message(client, userdata, msg):
     payload = msg.payload.decode()
-    print(f"Message reçu sur {msg.topic}: {payload}")
+    logger.info(f"Message reçu sur {msg.topic}: {payload}")
 
     try:
         WorkersStats.stats[msg.topic] = (msg.payload['cpu_usage'], msg.payload['ram_usage'])
     except Exception as e:
-        print(f"Erreur lors de la récupération des stats: {e}")
+        logger.error(f"Erreur lors de la récupération des stats: {e}")
 
     if len(WorkersStats.stats) == N_WORKERS:
         WorkersStats.waiting_stats = False
 
 
 def on_publish(client, userdata, mid):
-    print(f"Message publié avec ID {mid}")
+    logger.info(f"Message publié avec ID {mid}")
 
 
 def on_subscribe(client, userdata, mid, granted_qos):
-    print(f"Abonnement au topic avec ID {mid} et QoS {granted_qos}")
+    logger.info(f"Abonnement au topic avec ID {mid} et QoS {granted_qos}")
 
 
 def ping_workers(client):
@@ -81,7 +81,7 @@ def ping_workers(client):
         try:
             client.publish(topic, PING_MSG)
         except Exception as e:
-            print(f"Erreur lors du ping: {e}")
+            logger.error(f"Erreur lors du ping: {e}")
 
 def connect():
     client = mqtt.Client()

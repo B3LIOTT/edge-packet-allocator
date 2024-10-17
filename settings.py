@@ -20,7 +20,7 @@ try:
     SOCKET_PORT = int(os.environ.get("SOCKET_PORT"))
 except TypeError:
     SOCKET_ADDR = "10.4.14.78"
-    SOCKET_PORT = 12345
+    SOCKET_PORT = 8000
 
 # Récupération des stats des workers
 N_WORKERS = 3
