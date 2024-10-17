@@ -23,11 +23,9 @@ def conn_loop(call):
 
 
 def build_edges():
-    ide = 0
     new_edges = []
     for key, val in mqtt.WorkersStats.stats.items():
-        new_edges.append(Edge(ide=ide, load=float(val[0]), remainingStorage=int(val[1]), associated_topic=key))
-        ide += 1
+        new_edges.append(Edge(load=float(val[0]), remainingStorage=int(val[1]), associated_topic=key))
 
     return new_edges
 
@@ -44,7 +42,8 @@ if __name__ == '__main__':
     edges = build_edges()
 
     try:
-        lb = LB.LB(name="LB", edges=edges)
+        lb = LB.LB(name="LB")
+        lb.update_edges(edges)
         while True:
             if TEST_MODE:
                 logger.info('\nEdges:')

@@ -1,14 +1,8 @@
-from docplex.mp.model import Model
-from modules.allocator.edge import Edge
-from settings import PACKET_SIZE, PACKET_NUMBER
-from modules.allocator.utils import getEdgeNameFromID
-from log_conf import logger
-
-# --------fix---------
-# pip install "numpy<2"
 import numpy as np
-np.float_ = np.float64
-# --------------------
+
+from modules.allocator.edge import Edge
+from settings import PACKET_SIZE, PACKET_NUMBER, MAX_STORAGE, CPU_THRESHOLD
+from log_conf import logger
 
 
 class LB:
@@ -16,19 +10,12 @@ class LB:
     Problème de load balancing
     """
 
-    def __init__(self, name: str, edges: list[Edge]):
+    def __init__(self, name: str):
         """
         :param name: nom du problème
-        :param ENV: environnement
         """
-        # Définition des variables
-        self.edges = edges
-        logger.info(f"\nEdges: {[edge.load for edge in edges]}\n")
-        self.n = PACKET_NUMBER
-        self.m = len(edges)
-        range_n = range(self.n)
-        range_m = range(self.m)
-
+        self.edges = []
+        self.bounds = (CPU_THRESHOLD, MAX_STORAGE - PACKET_SIZE)
 
     def update_edges(self, edges: list[Edge]):
         self.edges = edges
@@ -40,11 +27,22 @@ class LB:
     def solve(self) -> dict[str, int]:
         try:
             allocation_dict = {}
+            good_edges = []
+            tot = 0
+            for e in self.edges:
+                if e.load < self.bounds[0] and (MAX_STORAGE - e.remainingStorage) < self.bounds[1]:
+                    weight = 1/np.sqrt( (e.load/100)**3 + (e.remainingStorage/MAX_STORAGE)**2)
+                    good_edges.append((e, weight))
+                    tot += weight
+
+            if len(good_edges) == 0:
+                logger.error('Erreur LB: Aucun edge disponible')
+                return {}
+
+            for e, weight in good_edges:
+                allocation_dict[e.associated_topic] = int(PACKET_NUMBER * weight / tot)
 
             return allocation_dict
-        except TypeError or AttributeError:
-            logger.error('Erreur LB: Aucune solution trouvée')
-            return {}
         except Exception as e:
             logger.error('Erreur LB: ', str(e))
             return {}

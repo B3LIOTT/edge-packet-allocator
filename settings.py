@@ -3,6 +3,7 @@ import os
 PACKET_NUMBER = 300  # nombre de paquets à traiter par ittération
 PACKET_SIZE = 2000000  # taille d'un paquet en octets
 MAX_STORAGE = 10**9 # taille de stockage max par edges en octets
+CPU_THRESHOLD = 80  # seuil de charge CPU en %
 FREQ = 1  # secondes
 
 
