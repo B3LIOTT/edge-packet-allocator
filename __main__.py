@@ -57,6 +57,6 @@ if __name__ == '__main__':
         print(f"Erreur: {e}")
 
     finally:
-        # mqtt.dispose(client)
-        # smp.dispose(socket_conn)
+        mqtt.dispose(client)
+        smp.dispose(socket_conn)
         pass
