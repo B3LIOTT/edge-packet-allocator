@@ -15,7 +15,7 @@ except TypeError:
     BROKER_PORT = 1883
 
 # Policy
-try:
+try:    
     SOCKET_ADDR = os.environ.get("SOCKET_ADDR")
     SOCKET_PORT = int(os.environ.get("SOCKET_PORT"))
 except TypeError:
