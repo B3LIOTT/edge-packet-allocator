@@ -57,6 +57,9 @@ class LB:
 
     def update_edges(self, edges: list[Edge]):
         self.edges = edges
+        logger.info('Edges mis à jour:')
+        for edge in edges:
+            logger.info(edge)
 
     def solve(self) -> dict[str, int]:
         try:
@@ -69,6 +72,9 @@ class LB:
                     allocation_dict[target] = 1 if target not in allocation_dict else allocation_dict[target] + 1
 
             return allocation_dict
+        except TypeError or AttributeError:
+            logger.error('Erreur LB: Aucune solution trouvée')
+            return {}
         except Exception as e:
             logger.error('Erreur LB: ', str(e))
             return {}

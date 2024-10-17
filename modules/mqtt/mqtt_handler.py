@@ -10,20 +10,16 @@ class WorkersStats:
     waiting_stats = False
 
     @staticmethod
-    def get_stats():
+    def get_stats(client):
         logger.info("Getting stats from workers...")
 
         WorkersStats.waiting_stats = True
-        # ping_workers(client)
+        ping_workers(client)
 
         # dummy --------------------------------
-        sleep(0.5)
-        WorkersStats.stats = {
-            'packet_worker_1': (10, PACKET_SIZE * 1),
-            'packet_worker_2': (80, PACKET_SIZE * 100),
-            'packet_worker_3': (20, PACKET_SIZE * 1000)
-        }
-        WorkersStats.waiting_stats = False
+        # sleep(0.5)
+        # WorkersStats.set_stats_value("worker-1" ,(50, MAX_STORAGE))
+        # WorkersStats.done()
         # --------------------------------------
 
         # wait for responses from workers
@@ -36,8 +32,14 @@ class WorkersStats:
             sleep(0.1)
             timeout -= 1
 
-        if TEST_MODE:
-            logger.info("Stats received")
+    @staticmethod
+    def set_stats_value(k, v):
+        WorkersStats.stats[k] = v
+        logger.info(f"Nouvelles stats : {WorkersStats.stats}")
+
+    @staticmethod
+    def done():
+        WorkersStats.waiting_stats = False
 
 
 def on_connect(client, userdata, flags, rc):
@@ -52,20 +54,21 @@ def on_disconnect(client, userdata, rc):
     if rc != 0:
         logger.info(f"Déconnexion inattendue. Code de retour = {rc}")
     else:
-        logger.error("Déconnexion propre du broker MQTT")
+        logger.info("Déconnexion du broker MQTT")
 
 
 def on_message(client, userdata, msg):
-    payload = msg.payload.decode()
-    logger.info(f"Message reçu sur {msg.topic}: {payload}")
+    payload = eval(msg.payload.decode())
 
     try:
-        WorkersStats.stats[msg.topic] = (msg.payload['cpu_usage'], msg.payload['ram_usage'])
+        data = (payload["cpu_usage"], payload["mem_usage"])
+        worker = payload["worker"]
+        WorkersStats.set_stats_value(k=worker, v=data)
     except Exception as e:
         logger.error(f"Erreur lors de la récupération des stats: {e}")
 
     if len(WorkersStats.stats) == N_WORKERS:
-        WorkersStats.waiting_stats = False
+        WorkersStats.done()
 
 
 def on_publish(client, userdata, mid):
@@ -79,7 +82,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def ping_workers(client):
     for topic in WORKERS_PING:
         try:
-            client.publish(topic, PING_MSG)
+            client.publish(topic[0], PING_MSG)
         except Exception as e:
             logger.error(f"Erreur lors du ping: {e}")
 

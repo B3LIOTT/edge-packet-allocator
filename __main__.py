@@ -21,17 +21,26 @@ def conn_loop(call):
 
     return ret
 
+
+def build_edges():
+    ide = 0
+    new_edges = []
+    for key, val in mqtt.WorkersStats.stats.items():
+        new_edges.append(Edge(ide=ide, load=float(val[0]), remainingStorage=int(val[1]), associated_topic=key))
+        ide += 1
+
+    return new_edges
+
+
 if __name__ == '__main__':
+    logger.info("----------LOAD BALANCER----------")
     client = conn_loop(mqtt.connect)
+    logger.info("Connexion au broker MQTT réussie")
     socket_conn = conn_loop(smp.connect)
 
-    mqtt.WorkersStats.get_stats()
+    mqtt.WorkersStats.get_stats(client)
 
-    ide = 0
-    edges = []
-    for k, v in mqtt.WorkersStats.stats.items():
-        edges.append(Edge(ide=ide, load=float(v[0]), remainingStorage=int(v[1]), associated_topic=k))
-        ide += 1
+    edges = build_edges()
 
     try:
         lb = LB.LB(name="LB", edges=edges)
@@ -51,9 +60,9 @@ if __name__ == '__main__':
             smp.publish_policy(socket_conn, res)
 
             logger.info("------------------------------")
-            mqtt.WorkersStats.waiting_stats = False
             sleep(FREQ)
-            mqtt.WorkersStats.get_stats()
+            mqtt.WorkersStats.get_stats(client)
+            edges = build_edges()
             lb.update_edges(edges)
 
     except KeyboardInterrupt:

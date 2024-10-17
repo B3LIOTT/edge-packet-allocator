@@ -1,4 +1,4 @@
 import logging
 
-logger = logging.getLogger('aled')
-logger.setLevel(logging.INFO)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger('LOAD_BALANCER')

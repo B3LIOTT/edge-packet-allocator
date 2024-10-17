@@ -5,6 +5,7 @@ from log_conf import logger
 
 
 def connect():
+    logger.info("Connexion au socket...")
     try:
         socket_conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket_conn.connect((SOCKET_ADDR, SOCKET_PORT))
@@ -27,7 +28,6 @@ def publish_policy(socket_conn, policy):
         data_len = len(packed_data).to_bytes(4, 'big')
         socket_conn.sendall(data_len)
         socket_conn.sendall(packed_data)
-        logger.info("Règle envoyée: ", policy)
 
     except socket.error as e:
         logger.error("Erreur lors de l'envoi de la règle: ", e)

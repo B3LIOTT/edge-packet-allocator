@@ -1,8 +1,8 @@
 import os
 
-PACKET_NUMBER = 1024  # nombre de paquets à traiter par ittération
-PACKET_SIZE = 1920*1080*3  # taille d'un paquet
-MAX_STORAGE = PACKET_SIZE * 1000  # taille de stockage max par edge
+PACKET_NUMBER = 128  # nombre de paquets à traiter par ittération
+PACKET_SIZE = 1920*1080*3  # taille d'un paquet en octets
+MAX_STORAGE = 10**9 # taille de stockage max par edges en octets
 FREQ = 1  # secondes
 
 
@@ -11,7 +11,7 @@ try:
     BROKER_ADDRESS = os.environ.get("BROKER_ADDRESS")
     BROKER_PORT = int(os.environ.get("BROKER_PORT"))
 except TypeError:
-    BROKER_ADDRESS = "10.4.14.78"
+    BROKER_ADDRESS = "10.8.13.94"
     BROKER_PORT = 1883
 
 # Policy
@@ -19,13 +19,13 @@ try:
     SOCKET_ADDR = os.environ.get("SOCKET_ADDR")
     SOCKET_PORT = int(os.environ.get("SOCKET_PORT"))
 except TypeError:
-    SOCKET_ADDR = "10.4.14.78"
-    SOCKET_PORT = 8000
+    SOCKET_ADDR = "10.8.13.94"
+    SOCKET_PORT = 8081
 
 # Récupération des stats des workers
-N_WORKERS = 3
-WORKERS_PING = [("ping_worker_1", 1), ("ping_worker_2", 1), ("ping_worker_3", 1)]
-WORKERS_STATS = [("stats_worker_1", 1), ("stats_worker_2", 1), ("stats_worker_3", 1)]
+N_WORKERS = 1
+WORKERS_PING = [("worker-node-1-ping", 1)]#, ("worker-node-2-ping", 1), ("worker-node-3-ping", 1)]
+WORKERS_STATS = [("worker-node-1-stats", 1)]#, ("stats_worker_2", 1), ("stats_worker_3", 1)]
 PING_MSG = "stats"
 
 TEST_MODE = False
