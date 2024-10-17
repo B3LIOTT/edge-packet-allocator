@@ -78,8 +78,10 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def ping_workers(client):
     for topic in WORKERS_PING:
-        client.publish(topic, PING_MSG)
-
+        try:
+            client.publish(topic, PING_MSG)
+        except Exception as e:
+            print(f"Erreur lors du ping: {e}")
 
 def connect():
     client = mqtt.Client()
