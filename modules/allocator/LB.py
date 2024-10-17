@@ -23,6 +23,7 @@ class LB:
         """
         # Définition des variables
         self.edges = edges
+        logger.info(f"\nEdges: {[edge.load for edge in edges]}\n")
         self.n = PACKET_NUMBER
         self.m = len(edges)
         range_n = range(self.n)
@@ -43,15 +44,28 @@ class LB:
             self.model.add_constraint(self.model.sum(
                 PACKET_SIZE * x_dict[i, j] for i in
                 range_n) <= edges[j].remainingStorage
-                                      )
+            )
+
+        # Capacité cpu
+        for i in range_n:
+            for j in range_m:
+                self.model.add_constraint(edges[j].load + x_dict[i,j] <= 80)
         # ----------------------------
 
         # ---- Fonction objective ----
-        self.model.minimize(self.model.sum(
+        W = 1
+        self.model.minimize(
             self.model.sum(
-                edges[j].load * x_dict[i, j] for j in range_m
-            ) for i in range_n
-        ))
+                self.model.sum(
+                    edges[j].load * x_dict[i, j] for j in range_m
+                ) for i in range_n
+            )
+            + W*self.model.sum(
+                self.model.sum(
+                    x_dict[i, j] for i in range_n
+                ) **2 for j in range_m
+            )
+        )
         # ----------------------------
 
 

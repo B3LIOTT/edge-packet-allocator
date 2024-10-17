@@ -1,7 +1,7 @@
 import os
 
-PACKET_NUMBER = 128  # nombre de paquets à traiter par ittération
-PACKET_SIZE = 1920*1080*3  # taille d'un paquet en octets
+PACKET_NUMBER = 300  # nombre de paquets à traiter par ittération
+PACKET_SIZE = 2000000  # taille d'un paquet en octets
 MAX_STORAGE = 10**9 # taille de stockage max par edges en octets
 FREQ = 1  # secondes
 
@@ -23,9 +23,9 @@ except TypeError:
     SOCKET_PORT = 8081
 
 # Récupération des stats des workers
-N_WORKERS = 1
-WORKERS_PING = [("worker-node-1-ping", 1)]#, ("worker-node-2-ping", 1), ("worker-node-3-ping", 1)]
-WORKERS_STATS = [("worker-node-1-stats", 1)]#, ("stats_worker_2", 1), ("stats_worker_3", 1)]
+N_WORKERS = 3
+WORKERS_PING = [("worker-node-1-ping", 1), ("worker-node-2-ping", 1), ("worker-node-3-ping", 1)]
+WORKERS_STATS = [("worker-node-1-stats", 1), ("worker-node-2-stats", 1), ("worker-node-3-stats", 1)]
 PING_MSG = "stats"
 
 TEST_MODE = False
