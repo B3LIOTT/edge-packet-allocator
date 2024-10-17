@@ -15,7 +15,7 @@ subject to:
 
 $\sum_{j=1}^{n} x_{i,j} = 1$ for each $i \in \{1,2,...,m\}$
 
-$\sum_{i=1}^{m} x_{i,j} * s_p \leq s_j$ for each $j \in \{1,2,...,n\}$
+$\sum_{i=1}^{m} x_{i,j}s_p \leq s_j$ for each $j \in \{1,2,...,n\}$
 
 $x_{i,j} \in \{0,1\}$
 
