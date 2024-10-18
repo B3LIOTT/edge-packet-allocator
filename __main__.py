@@ -33,7 +33,6 @@ def build_edges():
 if __name__ == '__main__':
     logger.info("----------LOAD BALANCER----------")
     client = conn_loop(mqtt.connect)
-    client = None
     logger.info("Connexion au broker MQTT réussie")
     socket_conn = conn_loop(smp.connect)
 
