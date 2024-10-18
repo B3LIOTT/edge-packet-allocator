@@ -14,14 +14,14 @@ class WorkersStats:
         logger.info("Getting stats from workers...")
 
         WorkersStats.waiting_stats = True
-        #ping_workers(client)
+        ping_workers(client)
 
         # dummy --------------------------------
-        sleep(0.5)
-        WorkersStats.set_stats_value("worker-1" ,(randint(0, 100), MAX_STORAGE))
-        WorkersStats.set_stats_value("worker-2" ,(randint(0, 100), MAX_STORAGE))
-        WorkersStats.set_stats_value("worker-3" ,(randint(0, 100), MAX_STORAGE))
-        WorkersStats.done()
+        # sleep(0.5)
+        # WorkersStats.set_stats_value("worker-1" ,(randint(0, 100), MAX_STORAGE))
+        # WorkersStats.set_stats_value("worker-2" ,(randint(0, 100), MAX_STORAGE))
+        # WorkersStats.set_stats_value("worker-3" ,(randint(0, 100), MAX_STORAGE))
+        # WorkersStats.done()
         # --------------------------------------
 
         # wait for responses from workers

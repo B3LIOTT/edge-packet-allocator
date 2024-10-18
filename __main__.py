@@ -32,10 +32,10 @@ def build_edges():
 
 if __name__ == '__main__':
     logger.info("----------LOAD BALANCER----------")
-    #client = conn_loop(mqtt.connect)
+    client = conn_loop(mqtt.connect)
     client = None
     logger.info("Connexion au broker MQTT réussie")
-    #socket_conn = conn_loop(smp.connect)
+    socket_conn = conn_loop(smp.connect)
 
     mqtt.WorkersStats.get_stats(client)
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
                 if v > 0:
                     logger.info(f"{k} : {v}")
 
-            #smp.publish_policy(socket_conn, res)
+            smp.publish_policy(socket_conn, res)
 
             logger.info("------------------------------")
             sleep(FREQ)
@@ -72,6 +72,6 @@ if __name__ == '__main__':
         logger.error(f"Erreur main: {e}")
 
     finally:
-        # mqtt.dispose(client)
-        # smp.dispose(socket_conn)
+        mqtt.dispose(client)
+        smp.dispose(socket_conn)
         pass
