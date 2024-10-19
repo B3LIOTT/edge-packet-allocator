@@ -46,10 +46,6 @@ class LB:
                 range_n) <= edges[j].remainingStorage
             )
 
-        # Capacité cpu
-        for i in range_n:
-            for j in range_m:
-                self.model.add_constraint(edges[j].load + x_dict[i,j] <= 80)
         # ----------------------------
 
         # ---- Fonction objective ----
@@ -62,7 +58,7 @@ class LB:
             )
             + W*self.model.sum(
                 self.model.sum(
-                    x_dict[i, j] for i in range_n
+                    x_dict[i, j]**2 for i in range_n
                 ) **2 for j in range_m
             )
         )
