@@ -9,7 +9,7 @@ minimize the CPU load of each node subject to the constraint that the storage of
 
 In mathematical terms we have:
 
-$min \sum_{i=1}^{n}\sum_{j=1}^{m} x_{i,j}c_j$ + \lambda \sum_{j=1}^{m}(\sum_{i=1}^{n} x_{i,j})^2
+$min \sum_{i=1}^{n}\sum_{j=1}^{m} x_{i,j}c_j + \lambda \sum_{j=1}^{m}(\sum_{i=1}^{n} x_{i,j})^2$
 
 subject to:
 
