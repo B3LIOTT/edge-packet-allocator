@@ -18,9 +18,6 @@ class LB:
 
     def update_edges(self, edges: list[Edge]):
         self.edges = edges
-        logger.info('Edges mis à jour:')
-        for edge in edges:
-            logger.info(edge)
 
 
     def solve(self) -> dict[str, int]:
@@ -35,7 +32,7 @@ class LB:
                     tot += weight
 
             if len(good_edges) == 0:
-                logger.error('Erreur LB: Aucun edge disponible')
+                logger.error('Erreur: Aucun edge disponible')
                 return {}
 
             for e, weight in good_edges:
@@ -44,6 +41,6 @@ class LB:
 
             return allocation_dict
         except Exception as e:
-            logger.error('Erreur LB: ', str(e))
+            logger.error('Erreur: ', str(e))
             return {}
 

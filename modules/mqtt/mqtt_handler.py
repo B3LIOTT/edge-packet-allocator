@@ -11,8 +11,6 @@ class WorkersStats:
 
     @staticmethod
     def get_stats(client):
-        logger.info("Getting stats from workers...")
-
         WorkersStats.waiting_stats = True
         ping_workers(client)
 
@@ -37,7 +35,6 @@ class WorkersStats:
     @staticmethod
     def set_stats_value(k, v):
         WorkersStats.stats[k] = v
-        logger.info(f"Nouvelles stats : {WorkersStats.stats}")
 
     @staticmethod
     def done():
@@ -74,12 +71,10 @@ def on_message(client, userdata, msg):
 
 
 def on_publish(client, userdata, mid):
-    logger.info(f"Message publié avec ID {mid}")
-
+    pass
 
 def on_subscribe(client, userdata, mid, granted_qos):
-    logger.info(f"Abonnement au topic avec ID {mid} et QoS {granted_qos}")
-
+    pass
 
 def ping_workers(client):
     for topic in WORKERS_PING:

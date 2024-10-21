@@ -31,36 +31,22 @@ def build_edges():
 
 
 if __name__ == '__main__':
-    logger.info("----------LOAD BALANCER----------")
     client = conn_loop(mqtt.connect)
-    logger.info("Connexion au broker MQTT réussie")
     socket_conn = conn_loop(smp.connect)
-
     mqtt.WorkersStats.get_stats(client)
-
     edges = build_edges()
 
     try:
         lb = LB.LB(name="LB")
         lb.update_edges(edges)
         while True:
-            if TEST_MODE:
-                logger.info('\nEdges:')
-                for edge in edges:
-                    logger.info(edge)
-                logger.info("\nResult:")
-
             res = lb.solve()
-
-            for k, v in res.items():
-                if v > 0:
-                    logger.info(f"{k} : {v}")
-
+            logger.info(f"Result: {res}")
             smp.publish_policy(socket_conn, res)
 
-            logger.info("------------------------------")
             sleep(FREQ)
             mqtt.WorkersStats.get_stats(client)
+            logger.info(f"Worker stats: {mqtt.WorkersStats.stats}")
             edges = build_edges()
             lb.update_edges(edges)
 
@@ -73,4 +59,3 @@ if __name__ == '__main__':
     finally:
         mqtt.dispose(client)
         smp.dispose(socket_conn)
-        pass

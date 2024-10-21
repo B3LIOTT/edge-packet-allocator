@@ -5,7 +5,6 @@ from log_conf import logger
 
 
 def connect():
-    logger.info("Connexion au socket...")
     try:
         socket_conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket_conn.connect((SOCKET_ADDR, SOCKET_PORT))
