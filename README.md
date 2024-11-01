@@ -29,6 +29,8 @@ where:
   
 (A version without CPLEX is also available, which is simpler).
 
+### A simpler and more cost-efficient heuristic version is available in the without-cplex branch
+
 ## Usage
 `git clone https://github.com/B3LIOTT/edge-packet-allocator.git`
 
