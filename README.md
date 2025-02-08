@@ -32,10 +32,9 @@ where:
 ### A simpler and more cost-efficient heuristic version is available in the without-cplex branch
 
 ## Usage
-`git clone https://github.com/B3LIOTT/edge-packet-allocator.git`
-
-`cd edge-packet-allocator`
-
-`pip install -r requirements.txt`
-
-`python .`
+```bash
+git clone https://github.com/B3LIOTT/edge-packet-allocator.git`
+cd edge-packet-allocator
+pip install -r requirements.txt
+python .
+```
